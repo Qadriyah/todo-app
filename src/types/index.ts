@@ -3,7 +3,7 @@ export type Credentials = {
   password: string;
 };
 
-export type ApiResponse = {
+export type User = {
   user_id: number;
   user_email: string;
   user_username: string;
