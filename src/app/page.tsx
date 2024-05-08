@@ -1,95 +1,76 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import Input from "@/components/Input/Input";
+import { FaUser } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
+import styles from "./page.module.scss";
+import Space from "@/components/Space/Space";
+import Button from "@/components/Button/Button";
+import { useFormik } from "formik";
+import { loginValidationSchema } from "@/validation/loginValidationSchema";
+import { ApiResponse, Credentials } from "@/types";
+import { postApi } from "@/api";
 
-export default function Home() {
+const Login = () => {
+  const handleSubmit = async (values: Credentials) => {
+    const response = await postApi<ApiResponse>({
+      pathname: "/Tests/scripts/user-login.php",
+      data: values,
+    });
+  };
+
+  const formik = useFormik({
+    initialValues: { email: "", password: "" },
+    validateOnBlur: false,
+    validateOnChange: true,
+    validateOnMount: false,
+    validationSchema: loginValidationSchema,
+    onSubmit: handleSubmit,
+  });
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <section className={styles.container}>
+      <form className={styles.loginform} onSubmit={formik.handleSubmit}>
+        <h1>Rapptr Labs</h1>
+        <Space>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            icon={<FaUser />}
+            label="Email"
+            placeholder="Email address"
+            value={formik.values.email}
+            error={formik.touched.email ? formik.errors.email : ""}
+            onChange={formik.handleChange}
+            onBeforeInput={formik.handleBlur}
+          />
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            icon={<FaLock />}
+            label="Passeord"
+            placeholder="Password"
+            value={formik.values.password}
+            error={formik.touched.password ? formik.errors.password : ""}
+            onChange={formik.handleChange}
+            onBeforeInput={formik.handleBlur}
+          />
+          <Button
+            type="submit"
+            disabled={
+              !formik.values.email ||
+              !formik.values.password ||
+              !!formik.errors.email ||
+              !!formik.errors.password
+            }
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+            Login
+          </Button>
+        </Space>
+      </form>
+    </section>
   );
-}
+};
+
+export default Login;
