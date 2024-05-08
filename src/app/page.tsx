@@ -8,17 +8,25 @@ import Button from "@/components/Button/Button";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "@/validation/loginValidationSchema";
 import { Credentials } from "@/types";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { loginUser } from "@/lib/features/user";
 import { useRouter } from "next/navigation";
+import { storeItem } from "@/api/localstorage";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "@/api/actions/login";
 
 const Login = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.user);
 
-  const handleSubmit = (values: Credentials) => {
-    // dispatch(loginUser(values)).then(() => {});
+  const loginMutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: (data: Credentials) => loginUser(data),
+  });
+
+  const handleSubmit = async (values: Credentials) => {
+    const res = await loginMutation.mutateAsync(values);
+    if (!res.user_email) {
+      return;
+    }
+    storeItem("user", res);
     router.push("/todo-list");
   };
 
@@ -67,12 +75,13 @@ const Login = () => {
               !formik.values.password ||
               !!formik.errors.email ||
               !!formik.errors.password ||
-              state.loading === "pending"
+              loginMutation.isPending
             }
           >
             Login
           </Button>
         </Space>
+        {!!loginMutation.error && <p>{loginMutation.error.message}</p>}
       </form>
     </section>
   );
