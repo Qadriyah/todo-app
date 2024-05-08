@@ -11,5 +11,5 @@ export type User = {
   user_profile_image: string;
   user_creation_epoch: number;
   user_is_new: number;
-  user_token: number;
+  user_token: string;
 };

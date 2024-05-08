@@ -26,11 +26,11 @@ export const postApi = async <T>({
     return response.data;
   } catch (error: any) {
     if (error?.response?.data) {
-      return error.response.data;
+      throw new Error(error.response.data);
     }
     if (error?.data) {
-      return error.data;
+      throw new Error(error.data);
     }
-    return error;
+    throw error;
   }
 };
