@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .loginform {
+    width: 300px;
+
+    h1 {
+      text-align: center;
+    }
+  }
+}
