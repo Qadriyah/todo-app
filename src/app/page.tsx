@@ -7,15 +7,19 @@ import Space from "@/components/Space/Space";
 import Button from "@/components/Button/Button";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "@/validation/loginValidationSchema";
-import { ApiResponse, Credentials } from "@/types";
-import { postApi } from "@/api";
+import { Credentials } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { loginUser } from "@/lib/features/user";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const handleSubmit = async (values: Credentials) => {
-    const response = await postApi<ApiResponse>({
-      pathname: "/Tests/scripts/user-login.php",
-      data: values,
-    });
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((state) => state.user);
+
+  const handleSubmit = (values: Credentials) => {
+    // dispatch(loginUser(values)).then(() => {});
+    router.push("/todo-list");
   };
 
   const formik = useFormik({
@@ -62,7 +66,8 @@ const Login = () => {
               !formik.values.email ||
               !formik.values.password ||
               !!formik.errors.email ||
-              !!formik.errors.password
+              !!formik.errors.password ||
+              state.loading === "pending"
             }
           >
             Login
