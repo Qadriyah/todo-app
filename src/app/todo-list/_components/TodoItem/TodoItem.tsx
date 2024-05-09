@@ -14,12 +14,21 @@ type IProps = {
   todo: Todo;
   todos: Todo[];
   user: string;
+  setSelectedTodo: (item: Todo | null) => void;
+  setShowForm: (showForm: boolean) => void;
   refetch: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<Todo[] | null, Error>>;
 };
 
-const TodoItem: React.FC<IProps> = ({ todo, user, todos, refetch }) => {
+const TodoItem: React.FC<IProps> = ({
+  todo,
+  user,
+  todos,
+  refetch,
+  setSelectedTodo,
+  setShowForm,
+}) => {
   const deleteTodoMutation = useMutation({
     mutationKey: ["delete-todo"],
     mutationFn: (data: Todo[]) => Promise.resolve(storeItem(user, data)),
@@ -35,7 +44,14 @@ const TodoItem: React.FC<IProps> = ({ todo, user, todos, refetch }) => {
   return (
     <div className={styles.wrapper}>
       <p>{todo.name}</p>
-      <MdEdit size={20} style={{ cursor: "pointer" }} />
+      <MdEdit
+        size={20}
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          setSelectedTodo(todo);
+          setShowForm(false);
+        }}
+      />
       <FaTrashAlt style={{ cursor: "pointer" }} onClick={handleDelete} />
     </div>
   );

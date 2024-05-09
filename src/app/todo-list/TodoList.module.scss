@@ -25,6 +25,10 @@
     .todoItems {
       overflow-y: scroll;
       flex: 1;
+
+      p {
+        padding-inline: 20px;
+      }
     }
   }
 }
