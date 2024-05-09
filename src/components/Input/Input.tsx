@@ -4,7 +4,7 @@ import styles from "./Input.module.scss";
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
-  icon: React.ReactElement;
+  icon?: React.ReactElement;
 };
 
 const Input: React.FC<InputProps> = ({ label, error, icon, ...props }) => {

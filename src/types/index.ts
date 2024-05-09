@@ -13,3 +13,8 @@ export type User = {
   user_is_new: number;
   user_token: string;
 };
+
+export type Todo = {
+  id: number;
+  name: string;
+};
