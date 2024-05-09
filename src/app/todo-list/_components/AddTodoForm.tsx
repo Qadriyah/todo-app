@@ -29,7 +29,7 @@ const AddTodoForm: React.FC<IProps> = ({
 }) => {
   const todoMutation = useMutation({
     mutationKey: ["add-todo"],
-    mutationFn: (data: any) => Promise.resolve(storeItem(user, data)),
+    mutationFn: (data: Todo[]) => Promise.resolve(storeItem(user, data)),
   });
 
   const handleSubmit = async (values: { name: string }) => {
