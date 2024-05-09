@@ -1,0 +1,11 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 20px;
+  border-bottom: solid 1px #000;
+
+  p {
+    flex: 1;
+  }
+}

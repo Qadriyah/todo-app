@@ -1,6 +1,6 @@
 export const storeItem = (
   key: string,
-  data: Record<string, any> | string
+  data: Record<string, any> | string | Array<Record<string, any>>
 ): void => {
   if (typeof window !== "undefined") {
     if (typeof data === "string") {
