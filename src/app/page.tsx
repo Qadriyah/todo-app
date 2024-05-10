@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import Input from "@/components/Input/Input";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
@@ -9,12 +10,13 @@ import { useFormik } from "formik";
 import { loginValidationSchema } from "@/validation/loginValidationSchema";
 import { Credentials } from "@/types";
 import { useRouter } from "next/navigation";
-import { storeItem } from "@/api/localstorage";
+import { getObectItem, storeItem } from "@/api/localstorage";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "@/api/actions/login";
 
 const Login = () => {
   const router = useRouter();
+  const [error, setError] = React.useState("");
 
   const loginMutation = useMutation({
     mutationKey: ["login"],
@@ -22,11 +24,12 @@ const Login = () => {
   });
 
   const handleSubmit = async (values: Credentials) => {
-    const res = await loginMutation.mutateAsync(values);
-    if (!res.user_email) {
+    const { data, error } = await loginMutation.mutateAsync(values);
+    if (error) {
+      setError(error.message);
       return;
     }
-    storeItem("user", res);
+    storeItem("user", data);
     router.push("/todo-list");
   };
 
@@ -38,6 +41,13 @@ const Login = () => {
     validationSchema: loginValidationSchema,
     onSubmit: handleSubmit,
   });
+
+  React.useEffect(() => {
+    const user = getObectItem("user");
+    if (user) {
+      router.push("/todo-list");
+    }
+  }, [router]);
 
   return (
     <section className={styles.container}>
@@ -61,7 +71,7 @@ const Login = () => {
             name="password"
             type="password"
             icon={<FaLock />}
-            label="Passeord"
+            label="Password"
             placeholder="Password"
             value={formik.values.password}
             error={formik.touched.password ? formik.errors.password : ""}
@@ -81,7 +91,7 @@ const Login = () => {
             Login
           </Button>
         </Space>
-        {!!loginMutation.error && <p>{loginMutation.error.message}</p>}
+        {!!error && <p>{error}</p>}
       </form>
     </section>
   );

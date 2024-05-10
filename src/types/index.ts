@@ -17,4 +17,5 @@ export type User = {
 export type Todo = {
   id: number;
   name: string;
+  createdAt: string;
 };

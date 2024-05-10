@@ -5,9 +5,8 @@ type RequestProps = {
   data: any;
 };
 
-const baseURL =
-  process.env.NEXT_PUBLIC_SERVER_URL || "http://dev.rapptrlabs.com";
-axios.defaults.baseURL = baseURL;
+axios.defaults.baseURL =
+  process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 
 export const postApi = async <T>({
   pathname,
@@ -18,7 +17,6 @@ export const postApi = async <T>({
       method: "POST",
       url: pathname,
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       data,
