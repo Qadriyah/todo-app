@@ -1,16 +1,14 @@
 .container {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
   padding: 10px;
+  padding-top: 70px;
 
   .todoList {
     width: 90%;
     border: solid 1px #000;
     border-radius: 10px;
-    height: 80%;
     display: flex;
     flex-direction: column;
 
@@ -23,7 +21,6 @@
     }
 
     .todoItems {
-      overflow-y: scroll;
       flex: 1;
 
       p {
