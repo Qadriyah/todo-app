@@ -5,6 +5,7 @@ export const loginValidationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required")
+    .max(50, "Email address should not be more than 50 characters long")
     .test(
       "is-valid",
       () => "Invalid email address",

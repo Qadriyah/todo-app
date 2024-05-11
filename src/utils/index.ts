@@ -8,3 +8,11 @@ export const generateId = (todos: Todo[]): number => {
   }
   return id;
 };
+
+export const slugify = (str: string) => {
+  if (!str) {
+    return "";
+  }
+
+  return str.toLowerCase().split(" ").join("-");
+};
