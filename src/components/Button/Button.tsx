@@ -1,29 +1,19 @@
 import React, { ButtonHTMLAttributes, PropsWithChildren } from "react";
-import styles from "./Button.module.scss";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   PropsWithChildren & {
     loading?: boolean;
-    color?: "primary" | "secondary";
+    className?: string;
   };
-
-const btnColors = {
-  primary: "#2c75ff",
-  secondary: "#000000",
-};
 
 const Button: React.FC<ButtonProps> = ({
   loading,
-  color = "primary",
+  className = "btn btn-primary",
   children,
   ...props
 }) => {
   return (
-    <button
-      {...props}
-      className={styles.wrapper}
-      style={{ backgroundColor: btnColors[color] }}
-    >
+    <button {...props} className={className}>
       {children}
     </button>
   );

@@ -105,6 +105,7 @@ const AddTodoForm: React.FC<IProps> = ({
           color="secondary"
           type="submit"
           disabled={!formik.values.name || !!formik.errors.name}
+          className="btn btn-secondary"
         >
           Save
         </Button>
