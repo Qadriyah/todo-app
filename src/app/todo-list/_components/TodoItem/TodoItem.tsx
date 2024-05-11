@@ -9,6 +9,7 @@ import {
   useMutation,
 } from "@tanstack/react-query";
 import { storeItem } from "@/api/localstorage";
+import { slugify } from "@/utils";
 
 type IProps = {
   todo: Todo;
@@ -42,17 +43,22 @@ const TodoItem: React.FC<IProps> = ({
   };
 
   return (
-    <div className={styles.wrapper}>
-      <p>{todo.name}</p>
+    <div className={styles.wrapper} data-testid="todo-item">
+      <p data-testid={slugify(todo.name)}>{todo.name}</p>
       <MdEdit
         size={20}
         style={{ cursor: "pointer" }}
+        data-testid={`edit-${slugify(todo.name)}`}
         onClick={() => {
           setSelectedTodo(todo);
           setShowForm(false);
         }}
       />
-      <FaTrashAlt style={{ cursor: "pointer" }} onClick={handleDelete} />
+      <FaTrashAlt
+        style={{ cursor: "pointer" }}
+        onClick={handleDelete}
+        data-testid={`delete-${slugify(todo.name)}`}
+      />
     </div>
   );
 };
