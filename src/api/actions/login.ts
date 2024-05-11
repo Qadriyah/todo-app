@@ -11,7 +11,7 @@ export type LoginResponse = {
 
 export const loginUser = async (data: Credentials): Promise<LoginResponse> => {
   const response = await postApi<LoginResponse>({
-    pathname: "/api/auth",
+    pathname: "/api/auth", // NextJS api route to mock authentication
     data,
   });
   return response;
