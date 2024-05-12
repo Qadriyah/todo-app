@@ -145,4 +145,29 @@ describe("TodoList", () => {
     const item = screen.queryByTestId("get-lunch");
     expect(item).not.toBeInTheDocument();
   });
+
+  it("should filter the todo list", async () => {
+    const user = userEvent.setup();
+    for (const todo of todos) {
+      const newButton = screen.getByRole("button", { name: /new/i });
+      await user.click(newButton);
+
+      const saveButton = screen.getByRole("button", { name: /save/i });
+      const inputField = screen.getByPlaceholderText(/Enter your todo/i);
+      await user.type(inputField, todo);
+      await user.click(saveButton);
+    }
+
+    const searchField = screen.getByPlaceholderText(/search/i);
+    await user.type(searchField, "take kids");
+    expect(searchField).toHaveValue("take kids");
+
+    const items = screen.getAllByTestId("todo-item");
+    expect(items).toHaveLength(1);
+    expect(items[0]).toHaveTextContent("Take kids to school");
+
+    await user.clear(searchField);
+    const todoItems = screen.getAllByTestId("todo-item");
+    expect(todoItems).toHaveLength(4);
+  });
 });
